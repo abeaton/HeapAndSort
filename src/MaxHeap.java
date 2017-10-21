@@ -1,3 +1,5 @@
+import org.junit.Assert;
+
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -18,6 +20,7 @@ public class MaxHeap <T extends Comparable> {
     public MaxHeap(T[] elements)
     {
         this();
+        Assert.assertNotNull(elements);
         this.addElements(elements);
     }
 
@@ -36,7 +39,7 @@ public class MaxHeap <T extends Comparable> {
         return this.getNumberOfElements() == 0;
     }
 
-    public T getTopElement() throws IllegalCallerException
+    public T getTopElement()
     {
         this.throwIfEmpty();
 
@@ -132,10 +135,7 @@ public class MaxHeap <T extends Comparable> {
 
     private void throwIfEmpty()
     {
-        if(this.isEmpty())
-        {
-            throw new IllegalCallerException("Heap is empty!");
-        }
+        Assert.assertFalse(isEmpty());
     }
 
     public void addElements(T[] elements)

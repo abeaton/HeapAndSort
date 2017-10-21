@@ -1,9 +1,16 @@
 import org.junit.Test;
 import org.junit.Assert;
+
 import java.util.ArrayList;
 
 public class MaxHeapTest
 {
+    @Test(expected = AssertionError.class)
+    public void TestCreation_Null()
+    {
+        new MaxHeap((Integer[]) null);
+    }
+
     @Test
     public void TestCreation_NoElements()
     {
@@ -149,7 +156,7 @@ public class MaxHeapTest
         Assert.assertEquals(7, heap.getNumberOfElements());
     }
 
-    @Test(expected = IllegalCallerException.class)
+    @Test(expected = AssertionError.class)
     public void TestGetTopElement_Throws()
     {
         MaxHeap<Integer> heap = new MaxHeap();
@@ -158,7 +165,7 @@ public class MaxHeapTest
         heap.getTopElement();
     }
 
-    @Test(expected = IllegalCallerException.class)
+    @Test(expected = AssertionError.class)
     public void TestRemoveTopElement_Throws()
     {
         MaxHeap<Integer> heap = new MaxHeap();
