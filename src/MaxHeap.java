@@ -1,3 +1,5 @@
+import com.sun.jdi.InvocationException;
+
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -26,9 +28,23 @@ public class MaxHeap <T extends Comparable> {
         return this.heap;
     }
     
-    public int count()
+    public int getNumberOfElements()
     {
         return this.heap.size();
+    }
+
+    public boolean isEmpty()
+    {
+        return this.getNumberOfElements() == 0;
+    }
+
+    public T getTopElement() throws IllegalCallerException {
+        if(this.isEmpty())
+        {
+            throw new IllegalCallerException("Heap is empty!");
+        }
+
+        return this.heap.get(0);
     }
 
     public void addElements(T[] elements)
@@ -42,7 +58,7 @@ public class MaxHeap <T extends Comparable> {
     {
         this.heap.add(element);
 
-        int index = this.count() - 1;
+        int index = this.getNumberOfElements() - 1;
         while(index > 0)
         {
             int indexAbove = this.getIndexAbove(index);

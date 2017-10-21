@@ -129,4 +129,30 @@ public class MaxHeapTest
 
         Assert.assertArrayEquals(arrayList.toArray(), expected);
     }
+
+    @Test
+    public void TestGetNumberOfElements(){
+        MaxHeap<Integer> heap = new MaxHeap();
+
+        Assert.assertTrue(heap.isEmpty());
+        Assert.assertEquals(0, heap.getNumberOfElements());
+
+        heap.addElement(1);
+        Assert.assertEquals(1, heap.getNumberOfElements());
+
+        heap.addElement(8);
+        Assert.assertEquals(2, heap.getNumberOfElements());
+
+        Integer[] fiveElements = { 2, 3, 4, 5, 1 };
+        heap.addElements(fiveElements);
+        Assert.assertEquals(7, heap.getNumberOfElements());
+    }
+
+    @Test(expected = IllegalCallerException.class)
+    public void TestGetTopElement_Throws() {
+        MaxHeap<Integer> heap = new MaxHeap();
+
+        Assert.assertTrue(heap.isEmpty());
+        heap.getTopElement();
+    }
 }
