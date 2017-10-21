@@ -131,7 +131,8 @@ public class MaxHeapTest
     }
 
     @Test
-    public void TestGetNumberOfElements(){
+    public void TestGetNumberOfElements()
+    {
         MaxHeap<Integer> heap = new MaxHeap();
 
         Assert.assertTrue(heap.isEmpty());
@@ -149,10 +150,88 @@ public class MaxHeapTest
     }
 
     @Test(expected = IllegalCallerException.class)
-    public void TestGetTopElement_Throws() {
+    public void TestGetTopElement_Throws()
+    {
         MaxHeap<Integer> heap = new MaxHeap();
 
         Assert.assertTrue(heap.isEmpty());
         heap.getTopElement();
+    }
+
+    @Test(expected = IllegalCallerException.class)
+    public void TestRemoveTopElement_Throws()
+    {
+        MaxHeap<Integer> heap = new MaxHeap();
+
+        Assert.assertTrue(heap.isEmpty());
+        heap.removeTopElement();
+    }
+
+    @Test
+    public void TestRemoveTopElement_ChoosesExpected()
+    {
+        Integer[] toAdd = { 20, 40, 30, 10 };
+        MaxHeap<Integer> heap = new MaxHeap<>(toAdd);
+
+        heap.removeTopElement();
+
+        Integer[] expected = { 30, 20, 10 };
+        Assert.assertArrayEquals(expected, heap.getHeapUnderlyingRepresentation().toArray());
+    }
+
+    @Test
+    public void TestRemoveTopElement_Many()
+    {
+        Integer[] toAdd = { 15, 40, 32, 18, 22 };
+        MaxHeap<Integer> heap = new MaxHeap<>(toAdd);
+
+        Integer topElement = heap.removeTopElement();
+        Assert.assertTrue(topElement == 40);
+
+        topElement = heap.removeTopElement();
+        Assert.assertTrue(topElement == 32);
+
+        topElement = heap.removeTopElement();
+        Assert.assertTrue(topElement == 22);
+
+        topElement = heap.removeTopElement();
+        Assert.assertTrue(topElement == 18);
+
+        topElement = heap.removeTopElement();
+        Assert.assertTrue(topElement == 15);
+    }
+
+    @Test
+    public void TestRemoveTopElement_OtherTypeMany()
+    {
+        String[] toAdd = { "a", "c", "b", "r", "g", "q", "h", "f", "p" };
+        MaxHeap<String> heap = new MaxHeap(toAdd);
+
+        String topElement = heap.removeTopElement();
+        Assert.assertEquals(topElement, "r");
+
+        topElement = heap.removeTopElement();
+        Assert.assertEquals(topElement, "q");
+
+        topElement = heap.removeTopElement();
+        Assert.assertEquals(topElement, "p");
+
+        topElement = heap.removeTopElement();
+        Assert.assertEquals(topElement, "h");
+
+        topElement = heap.removeTopElement();
+        Assert.assertEquals(topElement, "g");
+
+        topElement = heap.removeTopElement();
+        Assert.assertEquals(topElement, "f");
+
+        topElement = heap.removeTopElement();
+        Assert.assertEquals(topElement, "c");
+
+        topElement = heap.removeTopElement();
+        Assert.assertEquals(topElement, "b");
+
+        topElement = heap.removeTopElement();
+        Assert.assertEquals(topElement, "a");
     }
 }

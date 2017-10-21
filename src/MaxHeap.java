@@ -36,18 +36,112 @@ public class MaxHeap <T extends Comparable> {
         return this.getNumberOfElements() == 0;
     }
 
-    public T getTopElement() throws IllegalCallerException {
-        if(this.isEmpty())
-        {
-            throw new IllegalCallerException("Heap is empty!");
-        }
+    public T getTopElement() throws IllegalCallerException
+    {
+        this.throwIfEmpty();
 
         return this.heap.get(0);
     }
 
+    public T removeTopElement()
+    {
+        this.throwIfEmpty();
+
+        if(this.getNumberOfElements() == 1)
+        {
+            return this.heap.remove(0);
+        }
+        else
+        {
+            this.swapFirstAndLastElements();
+            T elementToReturn = this.removeLastElement();
+            this.bubbleDown();
+            return elementToReturn;
+        }
+    }
+
+    private void swapFirstAndLastElements()
+    {
+        Collections.swap(this.heap, 0, this.getLastIndex());
+    }
+
+    private T removeLastElement()
+    {
+        return this.heap.remove(this.getLastIndex());
+    }
+
+    private void bubbleDown()
+    {
+        int index = 0;
+
+        int lastIndex = this.getLastIndex();
+        while(index < lastIndex)
+        {
+            int largestIndex = this.getLargestIndexInTriplet(index);
+
+            if(largestIndex == index)
+            {
+                break;
+            }
+            else
+            {
+                Collections.swap(this.heap, index, largestIndex);
+                index = largestIndex;
+            }
+        }
+    }
+
+    /**
+     * Returns the index of the largest element for a given parent of child nodes in the heap.
+     * @param topElementIndex => the index of the topmost element in the triplet
+     * @return the index of the largest of the three elements
+     */
+    private int getLargestIndexInTriplet(int topElementIndex)
+    {
+        int largestIndex = topElementIndex;
+        T largestElement = this.heap.get(largestIndex);
+
+        int indexBelowLeft = this.getIndexBelowLeft(topElementIndex);
+        if(indexBelowLeft <= this.getLastIndex())
+        {
+            T elementBelowLeft = this.heap.get(indexBelowLeft);
+            if(largestElement.compareTo(elementBelowLeft) < 0)
+            {
+                largestIndex = indexBelowLeft;
+                largestElement = elementBelowLeft;
+            }
+        }
+
+        int indexBelowRight = this.getIndexBelowRight(topElementIndex);
+        if(indexBelowRight <= this.getLastIndex())
+        {
+            T elementBelowRight = this.heap.get(indexBelowRight);
+            if(largestElement.compareTo(elementBelowRight) < 0)
+            {
+                largestIndex = indexBelowRight;
+            }
+        }
+
+        return largestIndex;
+    }
+
+    private int getLastIndex()
+    {
+        return this.getNumberOfElements() - 1;
+    }
+
+    private void throwIfEmpty()
+    {
+        if(this.isEmpty())
+        {
+            throw new IllegalCallerException("Heap is empty!");
+        }
+    }
+
     public void addElements(T[] elements)
     {
-        for(T element : elements){
+        for(T element : elements)
+        {
             this.addElement(element);
         }
     }
@@ -55,8 +149,14 @@ public class MaxHeap <T extends Comparable> {
     public void addElement(T element)
     {
         this.heap.add(element);
+        this.bubbleUp();
+    }
 
-        int index = this.getNumberOfElements() - 1;
+    private void bubbleUp()
+    {
+        int index = this.getLastIndex();
+        T element = this.heap.get(index);
+
         while(index > 0)
         {
             int indexAbove = this.getIndexAbove(index);
@@ -73,7 +173,18 @@ public class MaxHeap <T extends Comparable> {
         }
     }
 
-    private int getIndexAbove(int index){
+    private int getIndexAbove(int index)
+    {
         return (index - 1) / 2;
+    }
+
+    private int getIndexBelowLeft(int index)
+    {
+        return (index * 2) + 1;
+    }
+
+    private int getIndexBelowRight(int index)
+    {
+        return (index + 1) * 2;
     }
 }
